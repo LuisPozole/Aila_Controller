@@ -1,7 +1,7 @@
 import 'package:mongo_dart/mongo_dart.dart';
 
 class MongoDBService {
-  static final String uri = "mongodb+srv://Luis:XahmSNY8h2ykcQEA@aila.ilku2.mongodb.net/aila_db";
+  static final String uri = "mongodb+srv://Luis:XahmSNY8h2ykcQEA@aila.ilku2.mongodb.net/Aila";
   static Db? _db;
 
   static Future<void> connect() async {

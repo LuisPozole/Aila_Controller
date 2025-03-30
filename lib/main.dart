@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'services/mongodb_service.dart';
 import 'ui/home_page.dart';
-import 'package:aila_/utils/constants.dart';
+import 'ui/login_page.dart';
+import 'utils/constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MongoDBService.connect();
-  runApp(MyApp());
+  
+  final storage = FlutterSecureStorage();
+  final loggedUser = await storage.read(key: 'loggedUser');
+  
+  runApp(MyApp(loggedUser: loggedUser));
 }
 
 class MyApp extends StatelessWidget {
+  final String? loggedUser;
+  const MyApp({this.loggedUser, super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,7 +27,11 @@ class MyApp extends StatelessWidget {
         primaryColor: AppColors.primary,
         fontFamily: 'Roboto',
       ),
-      home: HomePage(),
+      home: loggedUser != null ? HomePage() : LoginPage(),
+      routes: {
+        '/home': (context) => HomePage(),
+        '/login': (context) => LoginPage(),
+      },
     );
   }
 }

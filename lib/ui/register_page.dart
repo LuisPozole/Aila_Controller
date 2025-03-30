@@ -16,6 +16,13 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _userController = TextEditingController();
   final _passController = TextEditingController();
+  
+  // Controladores para la dirección
+  final _calleController = TextEditingController();
+  final _coloniaController = TextEditingController();
+  final _cpController = TextEditingController();
+  final _ciudadController = TextEditingController();
+  final _estadoController = TextEditingController();
 
   Future<void> _register() async {
     if (_formKey.currentState!.validate()) {
@@ -35,12 +42,22 @@ class _RegisterPageState extends State<RegisterPage> {
       final digest = sha256.convert(bytes);
       final encryptedPassword = digest.toString();
 
+      // Crear objeto de dirección
+      final nuevaDireccion = {
+        'calle': _calleController.text,
+        'colonia': _coloniaController.text,
+        'CP': _cpController.text,
+        'ciudad': _ciudadController.text,
+        'Estado': _estadoController.text,
+      };
+
       final newUser = User(
         id: DateTime.now().toString(),
         name: _nameController.text,
         username: _userController.text,
         email: _emailController.text,
         password: encryptedPassword,
+        ubicacion: [nuevaDireccion], // Añadir dirección al arreglo
       );
 
       await MongoDBService.getCollection('Usuarios').insert(newUser.toMap());
@@ -66,6 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
           key: _formKey,
           child: ListView(
             children: [
+              // Campos existentes
               TextFormField(
                 controller: _nameController,
                 decoration: const InputDecoration(labelText: 'Nombre completo'),
@@ -92,6 +110,42 @@ class _RegisterPageState extends State<RegisterPage> {
                 validator: (value) =>
                     value!.length < 6 ? 'Mínimo 6 caracteres' : null,
               ),
+              
+              // Sección de dirección
+              const SizedBox(height: 30),
+              const Text('Dirección:', style: TextStyle(fontSize: 18)),
+              TextFormField(
+                controller: _calleController,
+                decoration: const InputDecoration(labelText: 'Calle'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Ingresa tu calle' : null,
+              ),
+              TextFormField(
+                controller: _coloniaController,
+                decoration: const InputDecoration(labelText: 'Colonia'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Ingresa tu colonia' : null,
+              ),
+              TextFormField(
+                controller: _cpController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'Código Postal'),
+                validator: (value) =>
+                    (value!.length != 5) ? 'El CP debe tener 5 dígitos' : null,
+              ),
+              TextFormField(
+                controller: _ciudadController,
+                decoration: const InputDecoration(labelText: 'Ciudad'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Ingresa tu ciudad' : null,
+              ),
+              TextFormField(
+                controller: _estadoController,
+                decoration: const InputDecoration(labelText: 'Estado'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Ingresa tu estado' : null,
+              ),
+
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: _register,

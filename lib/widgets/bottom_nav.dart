@@ -12,7 +12,7 @@ class BottomNav extends StatelessWidget {
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.notifications), label: "Recordatorios"),
         BottomNavigationBarItem(icon: Icon(Icons.mic), label: "Hablar"),
-        BottomNavigationBarItem(icon: Icon(Icons.alarm), label: "Alarmas"),
+        BottomNavigationBarItem(icon: Icon(Icons.laptop), label: "dispositivos"),
       ],
     );
   }

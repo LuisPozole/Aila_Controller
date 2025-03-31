@@ -20,7 +20,6 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
-      // Encriptar contraseña ingresada
       final bytes = utf8.encode(_passController.text);
       final digest = sha256.convert(bytes);
       final encryptedPass = digest.toString();
@@ -36,7 +35,11 @@ class _LoginPageState extends State<LoginPage> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Credenciales incorrectas')),
+          SnackBar(
+            content: Text('Credenciales incorrectas',
+                style: TextStyle(color: Colors.white)),
+            backgroundColor: Colors.redAccent,
+          ),
         );
       }
     }
@@ -46,67 +49,93 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 80),
-            Text(
-              "¿Espera, nos conocemos?",
-              style: AppTextStyles.bigTitle,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 30),
-            Image.asset("assets/mascota.png", height: 200),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: _userController,
-                      decoration: const InputDecoration(
-                        labelText: 'Usuario',
-                        prefixIcon: Icon(Icons.person),
-                      ),
-                      validator: (value) =>
-                          value!.isEmpty ? 'Ingresa tu usuario' : null,
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: _passController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: 'Contraseña',
-                        prefixIcon: Icon(Icons.lock),
-                      ),
-                      validator: (value) =>
-                          value!.isEmpty ? 'Ingresa tu contraseña' : null,
-                    ),
-                    const SizedBox(height: 30),
-                    ElevatedButton(
-                      onPressed: _login,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 50, vertical: 15),
-                      ),
-                      child: const Text('Ingresar',
-                          style: TextStyle(color: Colors.white)),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => RegisterPage()),
-                      ),
-                      child: Text('¿No tienes cuenta? ¡Creemos una!',
-                          style: TextStyle(color: AppColors.primary)),
-                    ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "¿Espera, nos conocemos?",
+                style: AppTextStyles.bigTitle,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              Image.asset("assets/mascota.png", height: 150),
+              const SizedBox(height: 30),
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 10,
+                      offset: Offset(0, 5),
+                    )
                   ],
                 ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: _userController,
+                        decoration: InputDecoration(
+                          labelText: 'Usuario',
+                          prefixIcon: Icon(Icons.person, color: AppColors.primary),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        validator: (value) =>
+                            value!.isEmpty ? 'Ingresa tu usuario' : null,
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: _passController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: 'Contraseña',
+                          prefixIcon: Icon(Icons.lock, color: AppColors.primary),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        validator: (value) =>
+                            value!.isEmpty ? 'Ingresa tu contraseña' : null,
+                      ),
+                      const SizedBox(height: 30),
+                      ElevatedButton(
+                        onPressed: _login,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 60, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Text('Ingresar',
+                            style: TextStyle(color: Colors.white, fontSize: 16)),
+                      ),
+                      const SizedBox(height: 10),
+                      TextButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RegisterPage()),
+                        ),
+                        child: Text('¿No tienes cuenta? ¡Creemos una!',
+                            style: TextStyle(color: AppColors.primary)),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

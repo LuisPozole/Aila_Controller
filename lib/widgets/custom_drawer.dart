@@ -19,7 +19,7 @@ class CustomDrawer extends StatelessWidget {
             decoration: BoxDecoration(color: AppColors.primary),
             child: Center(
               child: Text(
-                "Menú",
+                "Aila",
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -30,17 +30,17 @@ class CustomDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.person, color: AppColors.primary),
-            title: Text("📌 Perfil"),
+            title: Text("Perfil"),
             onTap: () => Navigator.pushNamed(context, "/perfil"),
           ),
           ListTile(
             leading: Icon(Icons.lock, color: AppColors.primary),
-            title: Text("🔑 Cuentas"),
+            title: Text("Cuentas"),
             onTap: () => Navigator.pushNamed(context, "/cuentas"),
           ),
           ListTile(
             leading: Icon(Icons.contacts, color: AppColors.primary),
-            title: Text("☎️ Contactos"),
+            title: Text("Contactos"),
             onTap: () => Navigator.pushNamed(context, "/contactos"),
           ),
           Divider(color: AppColors.primary), // Línea separadora
